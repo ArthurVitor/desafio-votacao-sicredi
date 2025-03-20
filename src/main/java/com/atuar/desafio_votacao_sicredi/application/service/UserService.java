@@ -1,10 +1,14 @@
 package com.atuar.desafio_votacao_sicredi.application.service;
 
+import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.ListUserDto;
+import com.atuar.desafio_votacao_sicredi.application.mapper.PageMapper;
 import com.atuar.desafio_votacao_sicredi.application.mapper.UserMapper;
 import com.atuar.desafio_votacao_sicredi.domain.entity.User;
 import com.atuar.desafio_votacao_sicredi.domain.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service()
@@ -19,5 +23,11 @@ public class UserService {
         User user = UserMapper.toEntity(dto);
 
         return UserMapper.toListDto(userRepository.save(user));
+    }
+
+    public PageDto<ListUserDto> getAll(Pageable pageable) {
+        Page<ListUserDto> users = userRepository.findAll(pageable).map(UserMapper::toListDto);
+
+        return PageMapper.toPageDto(users);
     }
 }

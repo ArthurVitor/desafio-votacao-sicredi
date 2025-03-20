@@ -1,13 +1,12 @@
 package com.atuar.desafio_votacao_sicredi.presentation.controller;
 
+import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.ListUserDto;
 import com.atuar.desafio_votacao_sicredi.application.service.UserService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/user-controller")
@@ -21,5 +20,10 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<ListUserDto> save(@RequestBody CreateUserDto user) {
         return ResponseEntity.ok(this.userService.create(user));
+    }
+
+    @GetMapping()
+    public ResponseEntity<PageDto<ListUserDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(this.userService.getAll(pageable));
     }
 }
