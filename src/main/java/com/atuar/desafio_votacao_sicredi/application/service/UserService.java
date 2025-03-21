@@ -3,6 +3,7 @@ package com.atuar.desafio_votacao_sicredi.application.service;
 import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.ListUserDto;
+import com.atuar.desafio_votacao_sicredi.application.exception.NotFound.NotFoundException;
 import com.atuar.desafio_votacao_sicredi.application.mapper.PageMapper;
 import com.atuar.desafio_votacao_sicredi.application.mapper.UserMapper;
 import com.atuar.desafio_votacao_sicredi.domain.entity.User;
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     public ListUserDto getById(Long id) {
-        return UserMapper.toListDto(this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user with id: " + id)));
+        return UserMapper.toListDto(this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find user with id: " + id)));
     }
 
     public void delete(Long id) {
