@@ -26,4 +26,9 @@ public class UserController {
     public ResponseEntity<PageDto<ListUserDto>> getAll(Pageable pageable) {
         return ResponseEntity.ok(this.userService.getAll(pageable));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ListUserDto> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(this.userService.getById(id));
+    }
 }

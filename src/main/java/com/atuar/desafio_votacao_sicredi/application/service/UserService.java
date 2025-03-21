@@ -30,4 +30,8 @@ public class UserService {
 
         return PageMapper.toPageDto(users);
     }
+
+    public ListUserDto getById(Long id) {
+        return UserMapper.toListDto(userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user with id: " + id)));
+    }
 }
