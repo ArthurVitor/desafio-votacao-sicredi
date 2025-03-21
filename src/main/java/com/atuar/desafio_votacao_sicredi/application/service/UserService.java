@@ -22,16 +22,20 @@ public class UserService {
     public ListUserDto create(CreateUserDto dto) {
         User user = UserMapper.toEntity(dto);
 
-        return UserMapper.toListDto(userRepository.save(user));
+        return UserMapper.toListDto(this.userRepository.save(user));
     }
 
     public PageDto<ListUserDto> getAll(Pageable pageable) {
-        Page<ListUserDto> users = userRepository.findAll(pageable).map(UserMapper::toListDto);
+        Page<ListUserDto> users = this.userRepository.findAll(pageable).map(UserMapper::toListDto);
 
         return PageMapper.toPageDto(users);
     }
 
     public ListUserDto getById(Long id) {
-        return UserMapper.toListDto(userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user with id: " + id)));
+        return UserMapper.toListDto(this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find user with id: " + id)));
+    }
+
+    public void delete(Long id) {
+        this.userRepository.deleteById(id);
     }
 }

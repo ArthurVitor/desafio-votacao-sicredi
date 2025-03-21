@@ -4,6 +4,7 @@ import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.ListUserDto;
 import com.atuar.desafio_votacao_sicredi.application.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<ListUserDto> save(@RequestBody CreateUserDto user) {
+    public ResponseEntity<ListUserDto> save(@RequestBody @Valid CreateUserDto user) {
         return ResponseEntity.ok(this.userService.create(user));
     }
 
@@ -30,5 +31,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ListUserDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.userService.getById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        this.userService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
