@@ -30,5 +30,12 @@ public class VotingSessionController {
     public ResponseEntity<ListVotingSessionDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(votingSessionService.getById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        votingSessionService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
 

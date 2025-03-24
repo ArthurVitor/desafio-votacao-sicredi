@@ -48,4 +48,8 @@ public class VotingSessionService {
 
         return this.mapper.toDto(entity);
     }
+
+    public void delete(Long id) {
+        this.votingSessionRepository.deleteById(id);
+    }
 }
