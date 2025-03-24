@@ -18,8 +18,6 @@ public interface PautaMapper {
 
     ListPautaDto toDto(Pauta pauta);
 
-    List<ListPautaDto> toListDto(List<Pauta> pautas);
-
     @Mapping(target = "pageNumber", source = "page.number")
     @Mapping(target = "pageSize", source = "page.size")
     PageDto<ListPautaDto> toPageDto(Page<ListPautaDto> page);

@@ -1,14 +1,14 @@
 package com.atuar.desafio_votacao_sicredi.presentation.controller;
 
+import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.Pauta.CreatePautaDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.Pauta.ListPautaDto;
 import com.atuar.desafio_votacao_sicredi.application.service.PautaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/pauta")
@@ -17,7 +17,17 @@ public class PautaController {
     private final PautaService pautaService;
 
     @PostMapping()
-    public ResponseEntity<ListPautaDto> save(@RequestBody CreatePautaDto dto) {
+    public ResponseEntity<ListPautaDto> save(@RequestBody() @Valid() CreatePautaDto dto) {
         return ResponseEntity.ok(this.pautaService.create(dto));
+    }
+
+    @GetMapping()
+    public ResponseEntity<PageDto<ListPautaDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(this.pautaService.getAll(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ListPautaDto> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(this.pautaService.getById(id));
     }
 }
