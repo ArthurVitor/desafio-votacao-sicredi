@@ -33,4 +33,8 @@ public class PautaService {
     public ListPautaDto getById(Long id) {
        return this.pautaMapper.toDto(this.pautaRepository.findById(id).orElseThrow(() -> new NotFoundException("Couldn't find pauta with id: " + id)));
     }
+
+    public void delete(Long id) {
+        this.pautaRepository.deleteById(id);
+    }
 }

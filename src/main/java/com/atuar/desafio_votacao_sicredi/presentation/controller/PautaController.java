@@ -30,4 +30,11 @@ public class PautaController {
     public ResponseEntity<ListPautaDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.pautaService.getById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        this.pautaService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
