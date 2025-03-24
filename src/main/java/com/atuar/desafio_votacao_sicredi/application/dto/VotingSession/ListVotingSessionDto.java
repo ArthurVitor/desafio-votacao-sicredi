@@ -9,6 +9,7 @@ public record ListVotingSessionDto(
         Integer lifeTimeInMinutes,
         LocalDateTime startTime,
         LocalDateTime endTime,
+        Boolean isOpen,
         ListPautaDto pauta
 ) {
 }

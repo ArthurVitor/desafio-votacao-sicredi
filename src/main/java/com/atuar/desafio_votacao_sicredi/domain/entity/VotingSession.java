@@ -28,6 +28,9 @@ public class VotingSession {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
+    @Column(nullable = false)
+    private Boolean isOpen = true;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pauta_id", nullable = false)
     private Pauta pauta;
