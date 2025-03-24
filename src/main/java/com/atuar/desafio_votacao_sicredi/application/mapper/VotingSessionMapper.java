@@ -15,6 +15,7 @@ public interface VotingSessionMapper {
     @Mapping(target = "endTime", ignore = true)
     @Mapping(target = "pauta", ignore = true)
     @Mapping(target = "isOpen", ignore = true)
+    @Mapping(target = "votes", ignore = true)
     VotingSession toEntity(CreateVotingSessionDto dto);
 
     ListVotingSessionDto toDto(VotingSession session);

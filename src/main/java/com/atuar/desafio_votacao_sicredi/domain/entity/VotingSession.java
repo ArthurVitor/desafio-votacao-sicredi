@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity()
 @AllArgsConstructor()
@@ -34,4 +35,7 @@ public class VotingSession {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pauta_id", nullable = false)
     private Pauta pauta;
+
+    @OneToMany(mappedBy = "votingSession", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Vote> votes;
 }
