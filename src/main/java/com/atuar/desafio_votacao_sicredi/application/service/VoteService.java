@@ -14,6 +14,8 @@ import com.atuar.desafio_votacao_sicredi.domain.repository.VotingSessionReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class VoteService {
@@ -24,14 +26,13 @@ public class VoteService {
 
     public ListVoteDto vote(CreateVoteDto dto) {
         VotingSession votingSession = findVotingSessionById(dto.votingSessionId());
-        User user = findUserById(dto.userId());
+        isSessionValid(votingSession);
 
-        if (this.voteRepository.existsByVotingSessionAndUser(votingSession, user)) {
-            throw new BadRequestException("User already voted on this session");
-        }
+        User user = findUserById(dto.userId());
+        userAlreadyVoted(votingSession, user);
 
         Vote vote = new Vote(user, votingSession, dto.vote());
-        return voteMapper.toDto(this.voteRepository.save(vote));
+        return voteMapper.toDto(voteRepository.save(vote));
     }
 
     private VotingSession findVotingSessionById(Long id) {
@@ -42,5 +43,17 @@ public class VoteService {
     private User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Could not find user with id: " + id));
+    }
+
+    private void isSessionValid(VotingSession votingSession) {
+        if (votingSession.getEndTime().isBefore(LocalDateTime.now()) || !votingSession.getIsOpen()) {
+            throw new BadRequestException("Session already finished");
+        }
+    }
+
+    private void userAlreadyVoted(VotingSession votingSession, User user) {
+        if (voteRepository.existsByVotingSessionAndUser(votingSession, user)) {
+            throw new BadRequestException("User already voted on this session");
+        }
     }
 }
