@@ -6,7 +6,10 @@ import com.atuar.desafio_votacao_sicredi.application.dto.VotingSession.ListVotin
 import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
 import com.atuar.desafio_votacao_sicredi.application.mapper.VotingSessionMapper;
 import com.atuar.desafio_votacao_sicredi.domain.entity.Pauta;
+import com.atuar.desafio_votacao_sicredi.domain.entity.Vote;
 import com.atuar.desafio_votacao_sicredi.domain.entity.VotingSession;
+import com.atuar.desafio_votacao_sicredi.domain.enums.VoteEnum;
+import com.atuar.desafio_votacao_sicredi.domain.enums.VotingSessionStatusEnum;
 import com.atuar.desafio_votacao_sicredi.domain.repository.PautaRepository;
 import com.atuar.desafio_votacao_sicredi.domain.repository.VotingSessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service()
 @RequiredArgsConstructor()
@@ -51,5 +57,25 @@ public class VotingSessionService {
 
     public void delete(Long id) {
         this.votingSessionRepository.deleteById(id);
+    }
+
+    protected static VotingSessionStatusEnum calculateSessionResult(VotingSession votingSession) {
+        if (votingSession.getVotes().isEmpty()) {
+            return VotingSessionStatusEnum.UNDEFINED;
+        }
+
+        List<Vote> votes = votingSession.getVotes();
+        Map<VoteEnum, Long> voteCount = votes.stream().collect(Collectors.groupingBy(Vote::getVote, Collectors.counting()));
+
+        Long yesCount = voteCount.getOrDefault(VoteEnum.YES, 0L);
+        Long noCount = voteCount.getOrDefault(VoteEnum.NO, 0L);
+
+        if (yesCount > noCount) {
+            return VotingSessionStatusEnum.APPROVED;
+        } else if (noCount > yesCount) {
+            return VotingSessionStatusEnum.REPROVED;
+        } else {
+            return VotingSessionStatusEnum.UNDEFINED;
+        }
     }
 }

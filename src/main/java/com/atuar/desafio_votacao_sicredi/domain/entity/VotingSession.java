@@ -1,5 +1,6 @@
 package com.atuar.desafio_votacao_sicredi.domain.entity;
 
+import com.atuar.desafio_votacao_sicredi.domain.enums.VotingSessionStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,4 +39,7 @@ public class VotingSession {
 
     @OneToMany(mappedBy = "votingSession", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Vote> votes;
+
+    @Column(nullable = false)
+    private VotingSessionStatusEnum status = VotingSessionStatusEnum.ONGOING;
 }
