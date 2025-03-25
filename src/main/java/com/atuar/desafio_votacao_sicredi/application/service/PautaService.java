@@ -3,7 +3,7 @@ package com.atuar.desafio_votacao_sicredi.application.service;
 import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.Pauta.CreatePautaDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.Pauta.ListPautaDto;
-import com.atuar.desafio_votacao_sicredi.application.exception.NotFound.NotFoundException;
+import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
 import com.atuar.desafio_votacao_sicredi.application.mapper.PautaMapper;
 import com.atuar.desafio_votacao_sicredi.domain.entity.Pauta;
 import com.atuar.desafio_votacao_sicredi.domain.repository.PautaRepository;

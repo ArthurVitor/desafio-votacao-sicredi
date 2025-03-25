@@ -3,7 +3,7 @@ package com.atuar.desafio_votacao_sicredi.application.service;
 import com.atuar.desafio_votacao_sicredi.application.dto.Page.PageDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.VotingSession.CreateVotingSessionDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.VotingSession.ListVotingSessionDto;
-import com.atuar.desafio_votacao_sicredi.application.exception.NotFound.NotFoundException;
+import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
 import com.atuar.desafio_votacao_sicredi.application.mapper.VotingSessionMapper;
 import com.atuar.desafio_votacao_sicredi.domain.entity.Pauta;
 import com.atuar.desafio_votacao_sicredi.domain.entity.VotingSession;
@@ -32,7 +32,7 @@ public class VotingSessionService {
 
         LocalDateTime now = LocalDateTime.now();
         votingSession.setStartTime(now);
-        votingSession.setEndTime(now.plusDays(dto.lifeTimeInMinutes()));
+        votingSession.setEndTime(now.plusMinutes(dto.lifeTimeInMinutes()));
 
         return this.mapper.toDto(votingSessionRepository.save(votingSession));
     }
