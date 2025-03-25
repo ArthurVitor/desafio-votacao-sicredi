@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     boolean existsByVotingSessionAndUser(VotingSession votingSession, User user);
+    void deleteByVotingSessionAndUser(VotingSession votingSession, User user);
 }

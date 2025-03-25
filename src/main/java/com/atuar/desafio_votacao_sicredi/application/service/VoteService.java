@@ -2,6 +2,7 @@ package com.atuar.desafio_votacao_sicredi.application.service;
 
 import com.atuar.desafio_votacao_sicredi.application.dto.Vote.CreateVoteDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.Vote.ListVoteDto;
+import com.atuar.desafio_votacao_sicredi.application.dto.Vote.RemoveVoteDto;
 import com.atuar.desafio_votacao_sicredi.application.exception.BadRequestException;
 import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
 import com.atuar.desafio_votacao_sicredi.application.mapper.VoteMapper;
@@ -13,6 +14,7 @@ import com.atuar.desafio_votacao_sicredi.domain.repository.VoteRepository;
 import com.atuar.desafio_votacao_sicredi.domain.repository.VotingSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +35,16 @@ public class VoteService {
 
         Vote vote = new Vote(user, votingSession, dto.vote());
         return voteMapper.toDto(voteRepository.save(vote));
+    }
+
+    @Transactional()
+    public void unvote(RemoveVoteDto dto) {
+        VotingSession votingSession = findVotingSessionById(dto.votingSessionId());
+        User user = findUserById(dto.userId());
+
+        isSessionValid(votingSession);
+
+        this.voteRepository.deleteByVotingSessionAndUser(votingSession, user);
     }
 
     private VotingSession findVotingSessionById(Long id) {
