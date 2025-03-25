@@ -1,7 +1,8 @@
 package com.atuar.desafio_votacao_sicredi.presentation.handler;
 
 import com.atuar.desafio_votacao_sicredi.application.dto.Error.ErrorDto;
-import com.atuar.desafio_votacao_sicredi.application.exception.NotFound.NotFoundException;
+import com.atuar.desafio_votacao_sicredi.application.exception.BadRequestException;
+import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,10 +13,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<ErrorDto> handleNotFoundException(NotFoundException e) {
-        return this.craftResponse(e, HttpStatus.NOT_FOUND);
+        return this.buildResponse(e, HttpStatus.NOT_FOUND);
     }
 
-    private ResponseEntity<ErrorDto> craftResponse(RuntimeException e, HttpStatus status) {
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<ErrorDto> handleBadRequestException(BadRequestException e) {
+        return this.buildResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorDto> buildResponse(RuntimeException e, HttpStatus status) {
         ErrorDto errorDto = new ErrorDto(e.getMessage(), status.value());
 
         return ResponseEntity.status(status).body(errorDto);
