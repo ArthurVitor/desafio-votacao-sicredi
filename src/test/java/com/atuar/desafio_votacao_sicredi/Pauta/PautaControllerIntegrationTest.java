@@ -7,8 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class PautaControllerIntegrationTest {
     private static final String BASE_URL = "http://localhost:8080";
@@ -66,5 +65,19 @@ public class PautaControllerIntegrationTest {
                 .delete("/pauta/{id}", pautaId)
                 .then()
                 .statusCode(204);
+    }
+
+    @Test
+    @DisplayName("Should return 404 when getting a non-existent Pauta")
+    void testGetPautaNotFound() {
+        Long nonExistentPautaId = 9999L;
+
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/pauta/{id}", nonExistentPautaId)
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Couldn't find pauta with id: " + nonExistentPautaId));
     }
 }
