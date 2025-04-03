@@ -1,7 +1,5 @@
 package com.atuar.desafio_votacao_sicredi.User;
 
-import com.atuar.desafio_votacao_sicredi.Pauta.PautaStub;
-import com.atuar.desafio_votacao_sicredi.application.dto.Pauta.CreatePautaDto;
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,9 +28,9 @@ public class UserControllerIntegrationTests {
         given()
                 .contentType("application/json")
                 .body(createUserDto)
-                    .when()
+                .when()
                 .post("/user")
-                    .then()
+                .then()
                 .statusCode(200)
                 .body("id", notNullValue());
     }
