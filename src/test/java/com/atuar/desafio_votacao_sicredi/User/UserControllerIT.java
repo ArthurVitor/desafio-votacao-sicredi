@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Transactional
-class UserControllerIntegrationTests {
+class UserControllerIT {
 
     @LocalServerPort
     private int port;

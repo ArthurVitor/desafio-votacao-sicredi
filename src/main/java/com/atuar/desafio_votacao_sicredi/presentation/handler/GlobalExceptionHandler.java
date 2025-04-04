@@ -3,6 +3,7 @@ package com.atuar.desafio_votacao_sicredi.presentation.handler;
 import com.atuar.desafio_votacao_sicredi.application.dto.Error.ErrorDto;
 import com.atuar.desafio_votacao_sicredi.application.exception.BadRequestException;
 import com.atuar.desafio_votacao_sicredi.application.exception.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,6 +19,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ErrorDto> handleBadRequestException(BadRequestException e) {
+        return this.buildResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ErrorDto> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return this.buildResponse(e, HttpStatus.BAD_REQUEST);
     }
 
