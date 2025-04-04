@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Transactional()
-public class PautaControllerIT {
+public class PautaControllerTest {
     @LocalServerPort()
     private int port;
 
