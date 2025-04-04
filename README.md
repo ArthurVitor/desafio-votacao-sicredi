@@ -15,7 +15,8 @@ A aplicação deve ser executada na nuvem, com persistência dos dados para que 
 ## Tecnologias Utilizadas
 - **Spring Boot** (Java 21)
 - **Maven 3.8.6**
-- **PostgreSQL 17**
+- **PostgreSQL**
+- **Docker**
 
 ## Como Rodar a Aplicação
 
@@ -39,4 +40,4 @@ A aplicação deve ser executada na nuvem, com persistência dos dados para que 
 
 ## Informações Adicionais
 
-A aplicação utiliza **Spring Boot** como framework para o backend, com **Maven 3.8.6** como ferramenta de build e **Java 21** como linguagem de programação. O banco de dados utilizado é o **PostgreSQL 18**.
+A aplicação utiliza **Spring Boot** como framework para o backend, com **Maven 3.8.6** como ferramenta de build e **Java 21** como linguagem de programação. O banco de dados utilizado é o **PostgreSQL**.
