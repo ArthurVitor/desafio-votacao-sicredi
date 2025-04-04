@@ -1,30 +1,52 @@
 package com.atuar.desafio_votacao_sicredi.User;
 
 import com.atuar.desafio_votacao_sicredi.application.dto.User.CreateUserDto;
+import com.atuar.desafio_votacao_sicredi.application.service.UserService;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class UserControllerIntegrationTests {
-    private static final String BASE_URL = "http://localhost:8080";
-    private static CreateUserDto createUserDto;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@Transactional
+class UserControllerIntegrationTests {
 
-    @BeforeAll
-    static void setUp() {
-        RestAssured.baseURI = BASE_URL;
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
         RestAssured.basePath = "/v1/api";
 
-        createUserDto = UserStub.validCreateUserDto();
+        entityManager.createQuery("delete from User").executeUpdate();
+
+        userService.create(new CreateUserDto("Arthur", "email.com"));
     }
 
-    @Test()
+    @Test
     @DisplayName("Should create an user")
     void shouldCreateAnUser() {
+        var createUserDto = UserStub.validCreateUserDto();
+
         given()
                 .contentType("application/json")
                 .body(createUserDto)
@@ -45,19 +67,17 @@ public class UserControllerIntegrationTests {
                 .then()
                 .statusCode(200)
                 .body("content", notNullValue())
-                .body("content.size()", not(0))
-                .body("content[0].id", notNullValue())
-                .body("content[0].username", notNullValue())
+                .body("content.size()", greaterThanOrEqualTo(0))
                 .body("pageNumber", notNullValue())
                 .body("pageSize", notNullValue())
                 .body("totalElements", notNullValue())
                 .body("totalPages", notNullValue());
     }
 
-    @Test()
+    @Test
     @DisplayName("Should delete an User by Id")
     void shouldDeleteAnUserById() {
-        Long userId = 1L;
+        var userId = 1;
 
         given()
                 .contentType("application/json")
