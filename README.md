@@ -29,6 +29,12 @@ A aplicação deve ser executada na nuvem, com persistência dos dados para que 
    mvn spring-boot:run
    ```
    
+   Execute o seguinte comando iniciar o projeto utilizando DOCKER:
+
+   ```bash
+   docker-compose up --build
+   ```
+   
 2. **Rode os Testes**:
     Execute o seguinte comando para rodar os testes
 
